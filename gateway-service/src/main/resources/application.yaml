@@ -1,0 +1,51 @@
+server:
+  port: 9000
+
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: product-service
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+              - Path=/api/v1/products/**
+
+        - id: inventory-service
+          uri: lb://INVENTORY-SERVICE
+          predicates:
+            - Path=/api/v1/inventories/**
+
+        - id: order-service
+          uri: lb://ORDER_MS
+          predicates:
+            - Path=/api/v1/orders/**
+
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: gateway-service
+        url: /v3/api-docs
+
+      - name: product-service
+        url: /api/v1/products/v3/api-docs
+
+      - name: inventory-service
+        url: /api/v1/inventories/v3/api-docs
+
+      - name: order-service
+        url: /api/v1/orders/v3/api-docs
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    preferIpAddress: true

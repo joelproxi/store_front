@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product_ms
+    username: proxi
+    password: 123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 9500
+  servlet:
+    context-path: /api/v1
+
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /products/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /products/swagger-ui.html
+
