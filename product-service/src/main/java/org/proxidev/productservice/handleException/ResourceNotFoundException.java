@@ -3,8 +3,16 @@ package org.proxidev.productservice.handleException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import lombok.Getter;
+
 @ResponseStatus(HttpStatus.NOT_FOUND)
+@Getter
 public class ResourceNotFoundException extends RuntimeException {
+    
+    private final String fieldName;
+    private final Object fieldValue;
+    private final String resourceName;
+
     public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
         // Category avec id: 22 est n'existe pas
         super(String.format("%s with field %s: %s not found.", resourceName, fieldName, fieldValue));
@@ -13,8 +21,5 @@ public class ResourceNotFoundException extends RuntimeException {
         this.resourceName = resourceName;
     }
 
-    private String fieldName;
-    private Object fieldValue;
-    private String resourceName;
 
 }

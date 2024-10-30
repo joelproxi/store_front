@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService{
         Product savedProduct = productRepository.save(product);
 //    Call inventory service
         try {
-            boolean res = inventoryService.createInventory(savedProduct);
+            inventoryService.createInventory(savedProduct);
 
         }catch (Exception e){
                 productRepository.deleteById(savedProduct.getId());
@@ -88,7 +88,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public PagedResponse<ProductResponse> getProductsByCategory(long id, int page, int size) {
-        Category category  = categoryRepository.findById(id)
+        categoryRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException(CATEGORY, ID, id ));
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "name");
         Page<Product> productPage = productRepository.findProductByCategory_Id(id, pageable);

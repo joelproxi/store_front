@@ -1,7 +1,7 @@
 package org.proxidev.productservice.handleException;
 
 
-import jakarta.servlet.http.HttpServletRequest;
+
 import org.proxidev.productservice.payload.ErrorResponseApi;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

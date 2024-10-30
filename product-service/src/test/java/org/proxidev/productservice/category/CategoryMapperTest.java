@@ -1,8 +1,7 @@
 package org.proxidev.productservice.category;
 
 
-import org.assertj.core.api.Assert;
-import org.checkerframework.checker.units.qual.A;
+
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,7 +44,7 @@ class CategoryMapperTest {
     @Test
     public void test_it_should_not_map_nullEntity_to_dto_and_throw_NullPointerException(){
         // Arrange, Act and Assert
-        Category category = new Category(1L, "iphone");
+        // Category category = new Category(1L, "iphone");
         var mesg = assertThrows(NullPointerException.class, () -> categoryMapper.mapToDto(null));
 
         assertEquals("Entity not found", mesg.getMessage());
