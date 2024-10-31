@@ -2,11 +2,10 @@ package org.proxidev.order_ms.order;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.proxidev.order_ms.inventory.InventoryClient;
 import org.proxidev.order_ms.inventory.InventoryDTO;
 import org.proxidev.order_ms.payload.PagedResponse;
+import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,13 +17,19 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
-@Slf4j
 public class OrderServiceImpl implements OrderService {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(OrderServiceImpl.class);
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final InventoryClient inventoryClient;
     private final OrderProductRepository orderProductRepository;
+
+    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper, InventoryClient inventoryClient, OrderProductRepository orderProductRepository) {
+        this.orderRepository = orderRepository;
+        this.orderMapper = orderMapper;
+        this.inventoryClient = inventoryClient;
+        this.orderProductRepository = orderProductRepository;
+    }
 
 
     @Override
@@ -49,10 +54,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse createOrder(OrderRequest entity) {
-        if(entity == null) {
-           throw new IllegalArgumentException("OrderRequest is null");
+        if (entity == null) {
+            throw new IllegalArgumentException("OrderRequest is null");
         }
-        if (entity.getOrderProducts().isEmpty()){
+        if (entity.getOrderProducts().isEmpty()) {
             throw new IllegalArgumentException("OrderProducts is empty");
         }
 
@@ -61,10 +66,10 @@ public class OrderServiceImpl implements OrderService {
 //                    Product product = productRepository.findById(orderProductRequest.getProductId())
 //                            .orElseThrow(() -> new EntityNotFoundException("Product not found: "+ orderProductRequest.getProductId()));
                     InventoryDTO product = inventoryClient.getInventoryById(orderProductRequest.getProductId());
-                    if(product == null){
-                        throw  new EntityNotFoundException("Product not found: "+ orderProductRequest.getProductId());
+                    if (product == null) {
+                        throw new EntityNotFoundException("Product not found: " + orderProductRequest.getProductId());
                     }
-                    if(product.getQuantity() < orderProductRequest.getQuantity()) {
+                    if (product.getQuantity() < orderProductRequest.getQuantity()) {
                         throw new IllegalArgumentException("OrderProducts contains insufficient quantity");
                     }
 
@@ -73,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
 //                    productRepository.save(product);
                     var apiRes = inventoryClient.updateQuantity(product.getProductId(), newQuantity);
                     log.info(String.valueOf(apiRes));
-                    if (apiRes == null){
+                    if (apiRes == null) {
                         throw new IllegalArgumentException("OrderProducts contains insufficient quantity");
                     }
 

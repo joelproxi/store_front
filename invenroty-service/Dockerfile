@@ -13,8 +13,8 @@ FROM openjdk:23-slim
 
 WORKDIR /app
 
-COPY --from=build  /app/target/product-service-0.0.1-SNAPSHOT.jar ./product-service.jar
+COPY --from=build /app/target/invenroty-service-0.0.1-SNAPSHOT.jar ./invenroty-service.jar
 
-EXPOSE 9500
+EXPOSE 9501
 
-ENTRYPOINT ["java", "-jar", "product-service.jar"]
+ENTRYPOINT ["java", "-jar", "invenroty-service.jar"]

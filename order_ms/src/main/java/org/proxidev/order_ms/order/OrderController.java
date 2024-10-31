@@ -1,17 +1,19 @@
 package org.proxidev.order_ms.order;
 
-import lombok.RequiredArgsConstructor;
 import org.proxidev.order_ms.payload.PagedResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService orderService;
+
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @GetMapping
     ResponseEntity<PagedResponse<OrderResponse>> getAllOrders(

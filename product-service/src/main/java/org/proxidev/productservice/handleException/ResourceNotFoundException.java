@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import lombok.Getter;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-@Getter
 public class ResourceNotFoundException extends RuntimeException {
-    
+
     private final String fieldName;
     private final Object fieldValue;
     private final String resourceName;
@@ -22,4 +21,15 @@ public class ResourceNotFoundException extends RuntimeException {
     }
 
 
+    public String getFieldName() {
+        return this.fieldName;
+    }
+
+    public Object getFieldValue() {
+        return this.fieldValue;
+    }
+
+    public String getResourceName() {
+        return this.resourceName;
+    }
 }

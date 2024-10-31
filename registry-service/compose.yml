@@ -1,0 +1,14 @@
+
+services:
+  registry-service:
+    build:
+      context: .
+    container_name: registry-service
+    ports:
+      - '8761:8761'
+    networks:
+      - store_front_network
+
+networks:
+  store_front_network:
+    external: true

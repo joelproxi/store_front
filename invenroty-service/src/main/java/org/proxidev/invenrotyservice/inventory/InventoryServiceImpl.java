@@ -1,21 +1,24 @@
 package org.proxidev.invenrotyservice.inventory;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
-@RequiredArgsConstructor
 public class InventoryServiceImpl implements InventoryService {
     private final InventoryRepository inventoryRepository;
     private final InventoryMapper mapper;
+
+    public InventoryServiceImpl(InventoryRepository inventoryRepository, InventoryMapper mapper) {
+        this.inventoryRepository = inventoryRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public boolean createInventory(InventoryDTO dto) {
         Inventory inventory = mapper.mapToInventory(dto);
         Inventory savedInventory = inventoryRepository.save(inventory);
-        return !Objects.equals(savedInventory,null);
+        return !Objects.equals(savedInventory, null);
     }
 
     @Override

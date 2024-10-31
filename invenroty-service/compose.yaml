@@ -1,0 +1,43 @@
+
+services:
+  inventory-service:
+    build:
+      context: .
+    ports:
+      - "9501:9501"
+    networks:
+      - inventory-service
+      - store_front_network
+    environment:
+      DB_URL: jdbc:postgresql://inventory-db:5432/inventory_ms
+      DB_USERNAME: proxi
+      DB_PASSWORD: 123
+      REGISTRY_SERVICE: http://registry-service:8761/eureka/
+    depends_on:
+      - inventory-db
+    container_name: inventory-service
+
+
+  inventory-db:
+    image: postgres
+    environment:
+      POSTGRES_DB: inventory_ms
+      POSTGRES_USER: proxi
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5433:5432"
+    networks:
+      - inventory-service
+      - store_front_network
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+networks:
+  inventory-service:
+    driver: bridge
+  store_front_network:
+    external: true
+
+volumes:
+  postgres_data: {}

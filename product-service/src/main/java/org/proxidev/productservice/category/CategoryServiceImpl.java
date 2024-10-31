@@ -1,9 +1,7 @@
 package org.proxidev.productservice.category;
 
 
-
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.proxidev.productservice.handleException.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +11,19 @@ import static org.proxidev.productservice.utils.AppConstants.CATEGORY;
 import static org.proxidev.productservice.utils.AppConstants.ID;
 
 @Service
-@RequiredArgsConstructor
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper mapper;
 
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper mapper) {
+        this.categoryRepository = categoryRepository;
+        this.mapper = mapper;
+    }
+
     @Override
     public List<CategoryResponse> getAllCategories() {
-       List<Category> categories = categoryRepository.findAll();
-       return categories.stream().map(mapper::mapToDto).toList();
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream().map(mapper::mapToDto).toList();
     }
 
     @Override
@@ -34,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService{
     public CategoryResponse createCategory(CategoryRequest dto) {
         Category category = mapper.mapToEntity(dto);
         Category savedCat = categoryRepository.save(category);
-       return mapper.mapToDto(savedCat);
+        return mapper.mapToDto(savedCat);
     }
 
     @Override
@@ -50,5 +52,5 @@ public class CategoryServiceImpl implements CategoryService{
         Category existingCategory = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(CATEGORY, ID, id));
         categoryRepository.delete(existingCategory);
     }
-    
+
 }

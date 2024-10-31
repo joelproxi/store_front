@@ -1,5 +1,5 @@
 # Utilisation de l'image officielle Maven pour la compilation
-FROM maven:3.9.4-eclipse-temurin-21 AS build
+FROM maven:3.9.9 as Build
 
 
 WORKDIR /app
@@ -13,7 +13,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Utilisation de l'image OpenJDK pour exécuter l'application
-FROM eclipse-temurin:21-jdk-alpine
+FROM eclipse-temurin:23-jdk-alpine
 WORKDIR /app
 
 # Copier le fichier JAR généré depuis l'étape précédente

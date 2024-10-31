@@ -1,17 +1,19 @@
 package org.proxidev.invenrotyservice.inventory;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("inventories")
-@Slf4j
 public class InventoryController {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(InventoryController.class);
     private final InventoryService inventoryService;
+
+    public InventoryController(InventoryService inventoryService) {
+        this.inventoryService = inventoryService;
+    }
 
     @PostMapping
     ResponseEntity<Boolean> createInventory(@RequestBody InventoryDTO dto) {

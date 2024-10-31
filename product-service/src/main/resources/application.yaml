@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/product_ms
     username: proxi
-    password: 123
+    password: njee
     driver-class-name: org.postgresql.Driver
 
   jpa:
