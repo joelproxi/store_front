@@ -4,7 +4,7 @@ services:
       context: .
     container_name: spring-product-service
     ports:
-      - "9500:0500"
+      - "9500:9500"
     networks:
       - store_front_network
       - product-service
@@ -24,13 +24,12 @@ services:
       POSTGRES_USER: proxi
       POSTGRES_PASSWORD: 123
     ports:
-      - "5434:5432"
-    networks:
-      - product-service
-      - store_front_network
+      - "5435:5432"
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - product-service
 
 
 networks:

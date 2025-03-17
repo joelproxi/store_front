@@ -28,7 +28,6 @@ services:
       - "5433:5432"
     networks:
       - inventory-service
-      - store_front_network
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data

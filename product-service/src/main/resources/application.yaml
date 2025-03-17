@@ -19,7 +19,6 @@ server:
     context-path: /api/v1
 
 
-
 springdoc:
   api-docs:
     enabled: true
@@ -27,6 +26,7 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
+
 
 eureka:
   client:
