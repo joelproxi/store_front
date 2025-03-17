@@ -1,0 +1,45 @@
+services:
+  order-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring-order-service
+    ports:
+      - "9502:9502"
+    environment:
+      DB_URL: jdbc:postgresql://order-db:5432/inventory_ms
+      DB_USERNAME: proxi
+      DB_PASSWORD: 123
+      REGISTRY_SERVICE: http://registry-service:8761/eureka/
+    networks:
+      - store_front_network
+      - order-service
+    depends_on:
+      - order-db
+
+
+
+  order-db:
+    image: postgres
+    environment:
+      POSTGRES_DB: inventory_ms
+      POSTGRES_USER: proxi
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5434:5432"
+    networks:
+      - order-service
+      - store_front_network
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+networks:
+  order-service:
+    driver: bridge
+  store_front_network:
+    external: true
+
+volumes:
+  postgres_data: {}

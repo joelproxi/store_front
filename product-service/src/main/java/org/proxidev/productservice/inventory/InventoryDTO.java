@@ -2,6 +2,8 @@ package org.proxidev.productservice.inventory;
 
 import jakarta.persistence.Column;
 
+import java.util.Objects;
+
 public class InventoryDTO {
     private Long id;
     @Column(nullable = false)
@@ -44,19 +46,17 @@ public class InventoryDTO {
 
     public boolean equals(final Object o) {
         if (o == this) return true;
-        if (!(o instanceof InventoryDTO)) return false;
-        final InventoryDTO other = (InventoryDTO) o;
+        if (!(o instanceof InventoryDTO other)) return false;
         if (!other.canEqual((Object) this)) return false;
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (!Objects.equals(this$id, other$id)) return false;
         final Object this$productId = this.getProductId();
         final Object other$productId = other.getProductId();
-        if (this$productId == null ? other$productId != null : !this$productId.equals(other$productId)) return false;
+        if (!Objects.equals(this$productId, other$productId)) return false;
         final Object this$quantity = this.getQuantity();
         final Object other$quantity = other.getQuantity();
-        if (this$quantity == null ? other$quantity != null : !this$quantity.equals(other$quantity)) return false;
-        return true;
+        return Objects.equals(this$quantity, other$quantity);
     }
 
     protected boolean canEqual(final Object other) {

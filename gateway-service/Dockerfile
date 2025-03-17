@@ -13,7 +13,8 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Utilisation de l'image OpenJDK pour exécuter l'application
-FROM eclipse-temurin:23-jdk-alpine
+FROM openjdk:23-slim
+
 WORKDIR /app
 
 # Copier le fichier JAR généré depuis l'étape précédente

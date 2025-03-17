@@ -1,0 +1,16 @@
+services:
+  gateway-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    networks:
+      - store_front_network
+    environment:
+      REGISTRY_SERVICE: http://registry-service:8761/eureka/
+    container_name: spring-gateway-service
+
+networks:
+  store_front_network:
+    external: true
