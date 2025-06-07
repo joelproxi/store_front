@@ -2,7 +2,9 @@ package org.proxidev.invenrotyservice.inventory;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
@@ -38,5 +40,10 @@ public class InventoryServiceImpl implements InventoryService {
         return mapper.mapToDTO(inventoryRepository.save(inventory));
     }
 
-
+    @Override
+    public List<InventoryDTO> getAllInventories() {
+        return inventoryRepository.findAll().stream()
+                .map(mapper::mapToDTO)
+                .collect(Collectors.toList());
+    }
 }

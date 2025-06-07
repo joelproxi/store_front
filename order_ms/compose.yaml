@@ -7,7 +7,7 @@ services:
     ports:
       - "9502:9502"
     environment:
-      DB_URL: jdbc:postgresql://order-db:5432/inventory_ms
+      DB_URL: jdbc:postgresql://order-db:5432/order_ms
       DB_USERNAME: proxi
       DB_PASSWORD: 123
       REGISTRY_SERVICE: http://registry-service:8761/eureka/
@@ -22,7 +22,7 @@ services:
   order-db:
     image: postgres
     environment:
-      POSTGRES_DB: inventory_ms
+      POSTGRES_DB: order_ms
       POSTGRES_USER: proxi
       POSTGRES_PASSWORD: 123
     ports:
@@ -30,7 +30,7 @@ services:
     networks:
       - order-service
       - store_front_network
-    restart: always
+    restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

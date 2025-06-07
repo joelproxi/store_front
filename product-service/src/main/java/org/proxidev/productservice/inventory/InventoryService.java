@@ -3,14 +3,20 @@ package org.proxidev.productservice.inventory;
 import org.proxidev.productservice.product.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Service
 public class InventoryService {
-    private final RestTemplate restTemplate;
+    private final InventoryClient inventoryClient;
 
-    public InventoryService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public InventoryService(InventoryClient inventoryClient) {
+        this.inventoryClient = inventoryClient;
+    }
+
+    public List<InventoryDTO> getAllInventories() {
+        ResponseEntity<List<InventoryDTO>> response = inventoryClient.getAllInventories();
+        return response.getBody();
     }
 
     public boolean createInventory(Product product) {
@@ -18,9 +24,7 @@ public class InventoryService {
                 .productId(product.getId())
                 .quantity(product.getQuantity())
                 .build();
-        ResponseEntity<Void> resp = restTemplate.postForEntity(
-                "http://inventory-service" + "/api/v1/inventories",
-                inventoryDTO, Void.class);
+        ResponseEntity<Void> resp = inventoryClient.createInventory(inventoryDTO);
         return resp.getStatusCode().is2xxSuccessful();
     }
 }

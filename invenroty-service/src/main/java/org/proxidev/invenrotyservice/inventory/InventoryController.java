@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("inventories")
 public class InventoryController {
@@ -13,6 +15,11 @@ public class InventoryController {
 
     public InventoryController(InventoryService inventoryService) {
         this.inventoryService = inventoryService;
+    }
+
+    @GetMapping
+    ResponseEntity<List<InventoryDTO>> getAllInventories() {
+        return ResponseEntity.ok(inventoryService.getAllInventories());
     }
 
     @PostMapping

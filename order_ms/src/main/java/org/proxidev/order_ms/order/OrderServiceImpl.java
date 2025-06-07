@@ -49,7 +49,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse getOrderById(Long id) {
-        return null;
+        Order order = orderRepository.findById(String.valueOf(id))
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + id));
+        return orderMapper.mapToDto(order);
     }
 
     @Override
@@ -112,6 +114,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse deleteOrder(String id) {
-        return null;
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + id));
+        
+        // Restore inventory quantities before deleting the order
+        order.getOrderProducts().forEach(orderProduct -> {
+            InventoryDTO inventory = inventoryClient.getInventoryById(orderProduct.getProductId());
+            if (inventory != null) {
+                int newQuantity = inventory.getQuantity() + orderProduct.getQuantity();
+                inventoryClient.updateQuantity(orderProduct.getProductId(), newQuantity);
+            }
+        });
+
+        orderRepository.delete(order);
+        return orderMapper.mapToDto(order);
     }
 }

@@ -27,4 +27,14 @@ public class OrderController {
     ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(orderRequest));
     }
+
+    @GetMapping("/{id}")
+    ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getOrderById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<OrderResponse> deleteOrder(@PathVariable String id) {
+        return ResponseEntity.ok(orderService.deleteOrder(id));
+    }
 }

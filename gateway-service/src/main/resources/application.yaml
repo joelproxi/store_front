@@ -1,56 +1,6 @@
 server:
   port: 9000
 
-
-
-#spring:
-#  cloud:
-#    gateway:
-#      routes:
-#        - id: product-service
-#          uri: lb://PRODUCT-SERVICE
-#          predicates:
-#              - Path=/api/v1/products/**
-#
-#        - id: inventory-service
-#          uri: lb://INVENTORY-SERVICE
-#          predicates:
-#            - Path=/api/v1/inventories/**
-#
-#        - id: order-service
-#          uri: lb://ORDER-SERVICE
-#          predicates:
-#            - Path=/api/v1/orders/**
-
-
-springdoc:
-  api-docs:
-    enabled: true
-    path: /v3/api-docs
-  swagger-ui:
-    enabled: true
-    config-url: /v3/api-docs/swagger-config
-    urls:
-      - name: gateway-service
-        url: /v3/api-docs
-
-      - name: product-service
-        url: /product-service/api/v1/v3/api-docs
-
-      - name: inventory-service
-        url: /inventory-service/api/v1/v3/api-docs
-
-      - name: order-service
-        url: /order-service/api/v1/v3/api-docs
-
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${REGISTRY_SERVICE:http://localhost:8761/eureka}
-  instance:
-    preferIpAddress: true
-
 spring:
   cloud:
     gateway:
@@ -58,3 +8,49 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+      routes:
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/products/**, /product-service/**
+          filters:
+            - RewritePath=/product-service/(?<segment>.*), /$\{segment}
+
+        - id: inventory-service
+          uri: lb://inventory-service
+          predicates:
+            - Path=/api/v1/inventories/**, /inventory-service/**
+          filters:
+            - RewritePath=/inventory-service/(?<segment>.*), /$\{segment}
+
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/orders/**, /order-service/**
+          filters:
+            - RewritePath=/order-service/(?<segment>.*), /$\{segment}
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: gateway-service
+        url: /v3/api-docs
+      - name: product-service
+        url: /product-service/api/v1/v3/api-docs
+      - name: inventory-service
+        url: /inventory-service/api/v1/v3/api-docs
+      - name: order-service
+        url: /order-service/api/v1/v3/api-docs
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${REGISTRY_SERVICE:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true
